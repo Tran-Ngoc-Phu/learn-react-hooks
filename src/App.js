@@ -1,23 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import ToDoForm from "./components/ToDoForm";
+// import ColorBox from "./components/ColorBox/index.jsx";
+import ToDoList from "./components/ToDoList/index.jsx";
 
 function App() {
+  // Set state and initalize the value
+  const [toDoList, setToDoList] = useState([
+    { id: 1, title: "I love Easy Frontend!" },
+    { id: 2, title: "We love Easy Frontend!" },
+    { id: 3, title: "They love Easy Frontend!" },
+  ]);
+  // Remove a item when clicked
+  const handleToDoClick = (id) => {
+    // Clone the toDo list
+    const newToDoList = [...toDoList];
+    // Remove the clicked item
+    const indexRemoveItem = newToDoList.findIndex((toDo) => toDo.id === id);
+    newToDoList.splice(indexRemoveItem, 1);
+    // Set new value for todo list
+    setToDoList(newToDoList);
+  };
+  // Add new item to the list
+  const onSubmitNewItem = (value) => {
+    const newToDoList = [...toDoList];
+    newToDoList.push({
+      id: newToDoList.length + 1,
+      ...value,
+    });
+
+    setToDoList(newToDoList);
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <header className="App-header"></header>
+      {/* <ColorBox></ColorBox> */}
+      <ToDoList toDoList={toDoList} onRemoveItemClick={handleToDoClick} />
+      <ToDoForm onSubmitNewItem={onSubmitNewItem} />
     </div>
   );
 }
